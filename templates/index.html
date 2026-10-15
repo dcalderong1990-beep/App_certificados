@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Academia Horizonte - Certificados</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header class="encabezado">
+        <div class="contenedor">
+            <h1>Academia Horizonte</h1>
+            <p class="subtitulo">Centro de formación técnica para empresas - Certificados por cohorte</p>
+        </div>
+    </header>
+
+    <main class="contenedor">
+        <section class="contadores">
+            <div class="tarjeta cert-aprobacion">
+                <span class="numero">{{ contadores.aprobacion }}</span>
+                <span class="etiqueta">Aprobación</span>
+            </div>
+            <div class="tarjeta cert-participacion">
+                <span class="numero">{{ contadores.participacion }}</span>
+                <span class="etiqueta">Participación</span>
+            </div>
+            <div class="tarjeta cert-sin">
+                <span class="numero">{{ contadores.sin_certificado }}</span>
+                <span class="etiqueta">Sin certificado</span>
+            </div>
+            <div class="tarjeta cert-total">
+                <span class="numero">{{ contadores.total }}</span>
+                <span class="etiqueta">Estudiantes certificables</span>
+            </div>
+        </section>
+
+        <section class="bloque">
+            <h2>Filtrar resultados</h2>
+            <form method="get" action="/" class="filtro">
+                <label for="programa">Programa:</label>
+                <select name="programa" id="programa">
+                    <option value="">Todos</option>
+                    {% for programa in programas %}
+                        <option value="{{ programa }}" {% if programa == programa_filtro %}selected{% endif %}>
+                            {{ programa }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Aplicar</button>
+                <a class="limpiar" href="/">Limpiar</a>
+            </form>
+            {% if programa_filtro %}
+                <p class="nota">Mostrando: <strong>{{ programa_filtro }}</strong> ({{ resultados|length }} filas).</p>
+            {% endif %}
+        </section>
+
+        <section class="bloque">
+            <h2>Resultados por estudiante y programa</h2>
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Programa</th>
+                            <th>Módulos</th>
+                            <th>Promedio</th>
+                            <th>Asistencia</th>
+                            <th>Certificado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in resultados %}
+                            <tr>
+                                <td>{{ r.nombre }}</td>
+                                <td>{{ r.programa }}</td>
+                                <td class="centro">{{ r.modulos_cursados }}</td>
+                                <td class="centro">{{ r.promedio_nota }}</td>
+                                <td class="centro">{{ r.promedio_asistencia }}</td>
+                                <td>
+                                    <span class="badge {{ r.clase_certificado }}">
+                                        {{ r.certificado }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="vacio">No hay resultados para el filtro seleccionado.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="bloque">
+            <h2>Inconsistencias detectadas (3 tipos)</h2>
+
+            <h3>1. Estudiantes del maestro sin evaluaciones</h3>
+            {% if inconsistencias.sin_evaluaciones %}
+                <div class="tabla-contenedor">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Identificación</th>
+                                <th>Nombre</th>
+                                <th>Programa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for x in inconsistencias.sin_evaluaciones %}
+                                <tr>
+                                    <td>{{ x.identificacion }}</td>
+                                    <td>{{ x.nombre }}</td>
+                                    <td>{{ x.programa }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="ok">No se encontraron casos.</p>
+            {% endif %}
+
+            <h3>2. Identificaciones en evaluaciones no registradas en el maestro</h3>
+            {% if inconsistencias.fuera_de_maestro %}
+                <div class="tabla-contenedor">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Identificación</th>
+                                <th>Programa</th>
+                                <th>Módulos</th>
+                                <th>Prom. Nota</th>
+                                <th>Prom. Asist.</th>
+                                <th>Clasificación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for x in inconsistencias.fuera_de_maestro %}
+                                <tr>
+                                    <td>{{ x.identificacion }}</td>
+                                    <td>{{ x.programa }}</td>
+                                    <td class="centro">{{ x.modulos }}</td>
+                                    <td class="centro">{{ x.promedio_nota }}</td>
+                                    <td class="centro">{{ x.promedio_asistencia }}</td>
+                                    <td>{{ x.certificado }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="ok">No se encontraron casos.</p>
+            {% endif %}
+
+            <h3>3. Estudiantes con menos de 4 módulos cursados</h3>
+            {% if inconsistencias.modulos_incompletos %}
+                <p class="nota">Total: {{ inconsistencias.modulos_incompletos|length }} estudiante(s).</p>
+                <div class="tabla-contenedor">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Identificación</th>
+                                <th>Nombre</th>
+                                <th>Programa</th>
+                                <th>Cantidad</th>
+                                <th>Módulos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for x in inconsistencias.modulos_incompletos %}
+                                <tr>
+                                    <td>{{ x.identificacion }}</td>
+                                    <td>{{ x.nombre }}</td>
+                                    <td>{{ x.programa }}</td>
+                                    <td class="centro">{{ x.cantidad }}</td>
+                                    <td>{{ x.modulos }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="ok">No se encontraron casos.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer class="pie">
+        <div class="contenedor">
+            <p>Academia Horizonte &copy; Automatización de certificados. Insumos en modo solo lectura.</p>
+        </div>
+    </footer>
+</body>
+</html>
+PY

@@ -1,0 +1,207 @@
+/* Colores de Academia Horizonte: azul marino y dorado */
+:root {
+    --navy: #0b1f3a;
+    --navy-2: #123a6b;
+    --gold: #d4af37;
+    --gold-2: #b8962f;
+    --green: #2e7d32;
+    --blue: #1565c0;
+    --red: #c62828;
+    --gris: #f2f4f7;
+    --texto: #1f2937;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--gris);
+    color: var(--texto);
+}
+
+.contenedor {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 1rem 1.2rem;
+}
+
+.encabezado {
+    background: linear-gradient(135deg, var(--navy), var(--navy-2));
+    color: #fff;
+    border-bottom: 4px solid var(--gold);
+}
+
+.encabezado h1 {
+    margin: 0;
+    font-size: 1.9rem;
+    letter-spacing: 0.5px;
+}
+
+.subtitulo {
+    margin: 0.2rem 0 0;
+    color: #e7d6a4;
+}
+
+.bloque {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.2rem;
+    margin: 1.2rem 0;
+    box-shadow: 0 2px 8px rgba(11, 31, 58, 0.08);
+    border-top: 3px solid var(--gold);
+}
+
+h2 {
+    color: var(--navy);
+    border-left: 4px solid var(--gold);
+    padding-left: 0.6rem;
+    margin-top: 0;
+}
+
+h3 {
+    color: var(--navy-2);
+    margin-bottom: 0.5rem;
+}
+
+/* Contadores */
+.contadores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.9rem;
+    margin: 1.2rem 0;
+}
+
+.tarjeta {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(11, 31, 58, 0.08);
+    border-top: 5px solid var(--gold);
+}
+
+.tarjeta .numero {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.tarjeta .etiqueta {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.cert-aprobacion .numero { color: var(--green); }
+.cert-participacion .numero { color: var(--blue); }
+.cert-sin .numero { color: var(--red); }
+.cert-total .numero { color: var(--navy); }
+
+/* Filtro */
+.filtro {
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filtro select, .filtro button, .limpiar {
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px;
+}
+
+.filtro select {
+    border: 1px solid #ccc;
+}
+
+.filtro button {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.filtro button:hover {
+    background: var(--navy-2);
+}
+
+.limpiar {
+    color: var(--navy);
+    text-decoration: none;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+
+.nota {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.ok {
+    color: var(--green);
+    font-weight: 600;
+}
+
+/* Tabla */
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.93rem;
+}
+
+thead th {
+    background: var(--navy);
+    color: #fff;
+    padding: 0.65rem;
+    text-align: left;
+    border-bottom: 2px solid var(--gold);
+}
+
+tbody td {
+    padding: 0.6rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+tbody tr:hover {
+    background: #faf7ec;
+}
+
+.centro {
+    text-align: center;
+}
+
+.vacio {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.cert-aprobacion.badge { background: var(--green); }
+.cert-participacion.badge { background: var(--blue); }
+.cert-sin.badge { background: var(--red); }
+
+.pie {
+    background: var(--navy);
+    color: #d9d9d9;
+    border-top: 4px solid var(--gold);
+    padding: 0.8rem 0;
+    font-size: 0.85rem;
+}
+PY
