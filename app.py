@@ -12,8 +12,6 @@ from pathlib import Path
 from flask import Flask, render_template, request
 from openpyxl import load_workbook
 
-APP = Flask(__name__)
-
 # Ladrillo: rutas de la bodega de datos (inmutables)
 BASE_DIR = Path(__file__).resolve().parent
 INSUMOS_DIR = BASE_DIR / "insumos"
@@ -23,6 +21,12 @@ ARCHIVO_EVALUACIONES = (
     INSUMOS_DIR / "Registro_Evaluaciones.xlsx"
     if (INSUMOS_DIR / "Registro_Evaluaciones.xlsx").exists()
     else INSUMOS_DIR / "Registro_Evaluaciones (1).xlsx"
+)
+
+APP = Flask(
+    __name__,
+    template_folder=str(BASE_DIR / "templates"),
+    static_folder=str(BASE_DIR / "static"),
 )
 
 
@@ -248,4 +252,3 @@ if __name__ == "__main__":
     # Ladrillo: arranque del servidor en modo desarrollo
     print("Academia Horizonte - Servidor iniciado en http://localhost:5000")
     APP.run(host="0.0.0.0", port=5000, debug=True)
-PY
