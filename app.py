@@ -239,6 +239,11 @@ def index():
     )
 
 
+# Ladrillo: alias esperado por plataformas de despliegue (Vercel/Wsgi)
+app = APP
+application = APP
+
+
 if __name__ == "__main__":
     # Ladrillo: arranque del servidor en modo desarrollo
     print("Academia Horizonte - Servidor iniciado en http://localhost:5000")
