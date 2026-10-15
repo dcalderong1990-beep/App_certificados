@@ -220,6 +220,16 @@ def preparar_datos():
     }
 
 
+@APP.errorhandler(Exception)
+def manejar_error_general(error):
+    """Muestra el detalle temporalmente para diagnosticar despliegues (Vercel)."""
+    import traceback
+    from flask import make_response
+    detalle = traceback.format_exc()
+    print(detalle, flush=True)
+    return make_response("<pre>" + detalle + "</pre>", 500)
+
+
 @APP.route("/")
 def index():
     datos = preparar_datos()
